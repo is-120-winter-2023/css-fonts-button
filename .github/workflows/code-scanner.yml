@@ -22,4 +22,4 @@ jobs:
       - uses: chabad360/htmlproofer@master
         with:
           directory: "."
-          arguments: --allow-missing-href=true, --ignore-urls "/fonts.googleapis.com/"
+          arguments: --allow-missing-href=true, --ignore-urls "/fonts.gstatic.com/"
