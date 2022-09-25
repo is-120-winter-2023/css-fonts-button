@@ -196,6 +196,19 @@ test("global box-sizing rule set to border-box", () => {
   expect(regex.test(css)).toBe(true);
 });
 
+test(":root contains CSS variables for colors", () => {
+  const regex = new RegExp(/:root\s+\{\s*\n\s+--/);
+  expect(regex.test(css)).toBe(true);
+});
+
+//TODO: make this work for any order
+test("font-family, color, and line-height set on body", () => {
+  const regex = new RegExp(
+    /body\s+\{\s*\n\s+font-family:\s+.*;\s*\n\s+color:\s+.*;\s*\n\s+line-height:\s+.*;\s*\n\s+\}/
+  );
+  expect(regex.test(css)).toBe(true);
+});
+
 test('two web buttons on main page: <a class="button">', () => {
   const buttons = docs[INDEX].querySelectorAll("a.button");
   expect(buttons.length).toBeGreaterThanOrEqual(2);
@@ -208,10 +221,5 @@ test("CSS contains .button style declaration", () => {
 
 test("CSS contains .button:hover style declaration", () => {
   const regex = new RegExp(/\.button:hover\s*\{.*/);
-  expect(regex.test(css)).toBe(true);
-});
-
-test(":root contains CSS variables for colors", () => {
-  const regex = new RegExp(/:root\s+\{\s*\n\s+--/);
   expect(regex.test(css)).toBe(true);
 });
