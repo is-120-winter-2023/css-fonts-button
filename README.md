@@ -35,8 +35,9 @@ Browsers load stylesheets in the order that they are listed in the `<head>` elem
 - **CDN option** – To load normalize through a CDN, navigate to [cdnjs](https://cdnjs.com/libraries/normalize) and copy the link tag for `normalize.min.css` (the first file in the list). Paste the link into the `<head>` of each of your `index.html` files, making sure that it appears above the link to load your `styles/main.css` file.
 
 - **Local host option** – Download the latest `normalize.css` file from its [GitHub repo](https://necolas.github.io/normalize.css/). Clicking on download in the repo will likely open the file in your browser. To save it, right click and select "Save as..." and save it in your `styles` folder. Then, add a link to the file in the `<head>` of each of your `index.html` files In your subpages, making sure you use a correct relative path to the `normalize.css` file. Use Emmet to generate the link tag. Type `link:css` and press `tab`, then enter the path to the normalize.css file.
+  <!-- prettier-ignore -->
   ```html
-  <link rel="stylesheet" href="styles/normalize.css" />
+  <link rel="stylesheet" href="styles/normalize.css">
   ```
 
 ## Set box-sizing to border-box
@@ -55,7 +56,7 @@ The `*` is a [universal selector](https://developer.mozilla.org/en-US/docs/Web/C
 
 Since colors are used in many places, it's a good idea to define them as variables. This way, if you decide to change your color scheme, you only need to change the variable values.
 
-Variables that are used throughout your website are best added to the `:root` selector. This is a special selector that represents the root element of the document. It's almost the same as the `html` selector, but it has a higher specificity.
+Variables that are used throughout your website are best added to the `:root` selector. This is a special selector that represents the root element of the document. It's almost the same as the `html` selector, but, because it is a pseudo-class, it has a higher specificity.
 
 At the top of your `styles/main.css` file, add your style guide colors as CSS variables. You can name the variable using its color or its purpose, e.g. `--dark-blue` or `--primary-heading-color`
 
@@ -95,19 +96,19 @@ We'll use Google fonts in this course because they are free and they are easy to
 - Add the two Google fonts from your style guide to your website. Make sure to add the Google font `<link>` elements to the `<head>` of each of your HTML documents. The fonts should be loaded after `normalize.css` but before your `styles/main.css` file.
 - Use the `font-family` property to set the font for your headings and body text.
 - Assign colors to your headings and body text using the `color` property and your CSS variables.
-  ```
-    color: var(--dark-blue);
+  ```css
+  color: var(--dark-blue);
   ```
 
 Optional
 
 - Use the `font-weight` property to set the weight of your headings and body text.
 - Use the `font-size` property to set the size of your headings and body text.
-- Use the `letter-spacing` property to set the letter spacing of your headings and body text.
+- Use the `letter-spacing` property to set the letter spacing of your headings.
 
 ## Styling general links
 
-The default styling for `<a>` elements includes an underline. Most websites don't use underlines for links; rather, they make the links a different color than the base text. To remove the underline, you'll need to override the default styling by using the `a` selector.
+The default styling for `<a>` elements includes an underline. Most websites don't use underlines for links; rather, they make the links a different color than the base text. Remove the underline by overriding the default styling using the `a` selector. Give links a color using the `color` property and your CSS variables.
 
 Also add a `:hover` pseudo-class to style links when the user hovers over them.
 
@@ -118,9 +119,12 @@ Many links on the web are styled as buttons. Buttons are a common way to signal 
 - Add a link (`<a>`) below the text inside each of your two `<article>`s. Use a common link name such as "Learn More" or "Contact" or "Buy Now", etc. The link can be dead (no `href` attribute).
 - Add `class="button"` to the `<a>`
 - Create a `.button` class in your CSS file to style the link as a modern, stylish "web button." Use your color variables.
-- Override the default `a` styling to make sure that the links are not underlined.
-- Add a `:hover` effect for your button.
-- Add a transition to smooth the change when the button is hovered over.
+- Override the default `a` color if needed.
+- Add a `:hover` effect for your button. Make sure you override an existing `a:hover` effects.
+- Add a transition to smooth the change when the button is hovered over. Below is a simple transition that you can use:
+  ```css
+  transition: background-color 300ms ease;
+  ```
 - Change the cursor to a pointer when it's on top of/in the web button.
 
 ## Whitespace
