@@ -2,6 +2,8 @@
   --color-primary: #ff0000;
   --color-secondary: #00ff00;
   --color-tertiary: #0000ff;
+  --color-text: #616161;
+  --color-headings: #000;
 }
 
 * {
@@ -9,7 +11,16 @@
 }
 
 body {
-  margin: 0;
+  font-family: "PT Sans", sans-serif;
+  color: var(--color-text);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Nunito", sans-serif;
+  color: var(--color-headings);
 }
 
 picture img {
@@ -47,4 +58,11 @@ img[src$="svg"] {
 
 .button:hover {
   background-color: #3e8e41;
+}
+
+@media (min-width: 381px) {
+  picture img {
+    height: 100vh;
+    object-fit: cover;
+  }
 }
