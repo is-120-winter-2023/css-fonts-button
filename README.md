@@ -2,16 +2,54 @@
 
 **Objectives**: Learn how to use CSS stylesheets. Add web fonts to your website, adjust whitespace to keep your pages from looking crowded, and create a button class to style links to appear as "web buttons."
 
-| :warning: This assignment builds on your previous assignment                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| After cloning this repo and opening it in VSCode, copy the following files and folders from your previous assignment into this repo.<br><br><ul><li>📄 index.html</li><li>📄 favicon.ico</li><li>📁styles</li><li>📁images</li><li>📁about</li><li>📁contact</li></ul><br>**Make sure that you don't copy the hidden .git folder from your previous assignment**<br><br>You can remove the inline SVG from your main `index.html` if it doesn't fit with your design. You can also remove `<figure>` and `<figcaption>` from your image. |
+| :warning: This assignment builds on your _Responsive images and SVG images_ assignment                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| After cloning this repo and opening it in VSCode, copy the following files and folders from your _Responsive images and SVG images_ assignment into this repo.<br><br><ul><li>📄 index.html</li><li>📄 favicon.ico</li><li>📁styles</li><li>📁images</li><li>📁about</li><li>📁contact</li></ul><br>**Make sure that you don't copy the hidden `.git` folder from your previous assignment**<br><br>You can remove the inline SVG from your main `index.html` if it doesn't fit with your design. You can also remove `<figure>` and `<figcaption>` from your image. |
+
+## Image width reset
+
+When writing responsive websites, we usually set the image width to 100%. We aren't ready to make our images responsive, so in your `styles/main.css` file, change the selector of this ruleset to only apply to images inside `<picture>` elements.
+
+```css
+img {
+  width: 100%;
+  display: block;
+}
+```
+
+add `picture` to the selector:
+
+```css
+picture img {
+  width: 100%;
+  display: block;
+}
+```
 
 ## Add normalize.css to your website
 
-Browsers have default _user-agent stylesheets_ that provide styling for HTML elements. Since different browsers render CSS differently, you'll need to use a CSS reset to make sure your website looks consistent across all browsers. While there are many CSS resets (and most frameworks provide them), we'll use `normalize.css` which provides base styles for all browsers.
+Browsers have default _user-agent stylesheets_ that provide styling for HTML elements. Since different browsers render CSS differently, you'll need to use a CSS reset to make sure your website looks consistent across all browsers. While there are many CSS resets (and most frameworks provide them), we'll use `normalize.css` which provides base styles for all browsers. You have two options. The easiest option is to load normalize through a _Content Delivery Network_ or CDN. A CDN hosts the normalize file for you. A slightly faster option is to download the file and add it to your project.
 
-- CDN
-- Local
+Browsers load stylesheets in the order that they are listed in the `<head>` element. Since you want `normalize.css` to reset all styles before it applies your styles, you'll need to add it to the `<head>` element _above_ your `styles/main.css` file (and above the font stylesheets which we will add later in the assignment).
+
+- **CDN option** – To load normalize through a CDN, navigate to [cdnjs](https://cdnjs.com/libraries/normalize) and copy the link tag for `normalize.min.css` (the first file in the list). Paste the link into the `<head>` of each of your `index.html` files, making sure that it appears above the link to load your `styles/main.css` file.
+
+- **Local host option** – Download the latest `normalize.css` file from its [GitHub repo](https://necolas.github.io/normalize.css/). Clicking on download in the repo will likely open the file in your browser. To save it, right click and select "Save as..." and save it in your `styles` folder. Then, add a link to the file in the `<head>` of each of your `index.html` files In your subpages, making sure you use a correct relative path to the `normalize.css` file. Use Emmet to generate the link tag. Type `link:css` and press `tab`, then enter the path to the normalize.css file.
+  ```html
+  <link rel="stylesheet" href="styles/normalize.css" />
+  ```
+
+## Set box-sizing to border-box
+
+In your `styles/main.css` file, add the following rule to the top of the file:
+
+```css
+* {
+  box-sizing: border-box;
+}
+```
+
+The `*` is a [universal selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors) that selects all elements. The `box-sizing` property sets how the width and height of an element are calculated. The default value is `content-box` which means that the width and height of an element are calculated based on the content. The `border-box` value means that the width and height of an element are calculated based on the content, padding, and border. This is the behavior that we want for our website, so we'll set it for all elements.
 
 ## Add your style guide colors as CSS variables
 
@@ -46,7 +84,7 @@ or
   --color-highlight: #c7d2fe;
   --color-highlight-light: #e2e2e2;
   --color-text: #333;
-  --off-white: #e6f1ff;
+  --color-off-white: #e6f1ff;
 }
 ```
 
@@ -54,7 +92,7 @@ or
 
 We'll use Google fonts in this course because they are free and they are easy to use.
 
-- Add the two Google fonts from your style guide to your website. Make sure to include the Google font `<link>` elements to the `<head>` of each of your HTML documents.
+- Add the two Google fonts from your style guide to your website. Make sure to add the Google font `<link>` elements to the `<head>` of each of your HTML documents. The fonts should be loaded after `normalize.css` but before your `styles/main.css` file.
 - Use the `font-family` property to set the font for your headings and body text.
 - Assign colors to your headings and body text using the `color` property and your CSS variables.
   ```
