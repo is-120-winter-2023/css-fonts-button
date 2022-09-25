@@ -1,8 +1,11 @@
 const sizeOf = require("image-size");
-const http = require("http");
+const fs = require("fs");
 const { doms, INDEX, ABOUT, CONTACT } = require("./dom-check.js");
 
 const docs = doms.map(dom => dom.window.document);
+
+//load CSS file once
+const css = fs.readFileSync("styles/main.css", "utf-8");
 
 // since tests are expected to run synchronously, saving image info
 const images = [];
@@ -117,21 +120,6 @@ test("images that aren't SVGs and images outside <picture> elements have the <im
   });
 });
 
-test("stylesheet main.css in styles folder is loaded on all pages using relative links", () => {
-  docs.forEach((doc, i) => {
-    // relative links
-    if (i === INDEX) {
-      expect(doc.querySelector("link[rel='stylesheet']").href).toBe(
-        "styles/main.css"
-      );
-    } else {
-      expect(doc.querySelector("link[rel='stylesheet']").href).toBe(
-        "../styles/main.css"
-      );
-    }
-  });
-});
-
 test("main index.html contains a <picture> element", () =>
   expect(docs[INDEX].querySelector("picture")).not.toBeNull());
 
@@ -160,6 +148,70 @@ test("contact page loads an SVG file with <img>", () =>
 /*************/
 /* new tests */
 /*************/
-//TODO: normalize on all pages
-//TODO: google fonts on all pages
-//TODO: CSS checks?
+test("normalize.css loaded as first stylesheet on all pages", () => {
+  const regex = new RegExp(/normalize\..*css/);
+
+  docs.forEach(doc => {
+    const firstLink = doc.querySelector("link[rel='stylesheet']");
+    expect(regex.test(firstLink.href)).toBe(true);
+  });
+});
+
+test("stylesheet main.css in styles folder is loaded on all pages using relative links", () => {
+  docs.forEach((doc, i) => {
+    let found = false;
+
+    doc.querySelectorAll("link[rel='stylesheet']").forEach(link => {
+      if (i === INDEX) {
+        if (link.href === "styles/main.css") {
+          found = true;
+        }
+      } else {
+        if (link.href === "../styles/main.css") {
+          found = true;
+        }
+      }
+    });
+
+    expect(found).toBe(true);
+  });
+});
+
+test("Google Fonts stylesheet is loaded on all pages after normalize.css but before main.css", () => {
+  const regex = new RegExp(/fonts.googleapis.com/);
+  let found = false;
+
+  docs.forEach(doc => {
+    doc.querySelectorAll("link[rel='stylesheet']").forEach((link, i) => {
+      if (regex.test(link.href)) {
+        if (i === 1) found = true;
+      }
+    });
+  });
+  expect(found).toBe(true);
+});
+
+test("global box-sizing rule set to border-box", () => {
+  const regex = new RegExp(/\*\s+\{\s*\n\s+box-sizing:\s+border-box/);
+  expect(regex.test(css)).toBe(true);
+});
+
+test('two web buttons on main page: <a class="button">', () => {
+  const buttons = docs[INDEX].querySelectorAll("a.button");
+  expect(buttons.length).toBeGreaterThanOrEqual(2);
+});
+
+test("CSS contains .button style declaration", () => {
+  const regex = new RegExp(/\.button\s*\{.*/);
+  expect(regex.test(css)).toBe(true);
+});
+
+test("CSS contains .button:hover style declaration", () => {
+  const regex = new RegExp(/\.button:hover\s*\{.*/);
+  expect(regex.test(css)).toBe(true);
+});
+
+test(":root contains CSS variables for colors", () => {
+  const regex = new RegExp(/:root\s+\{\s*\n\s+--/);
+  expect(regex.test(css)).toBe(true);
+});
