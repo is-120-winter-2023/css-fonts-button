@@ -161,4 +161,6 @@ main {
 
 When your assignment is finished, sync it to Github and publish it on Github Pages. Remember to paste the Github pages URL in the repo _About_ section.
 
+Make sure to test your website on [validator.nu](https://validator.nu/). If you have any errors, fix them before submitting your URL to Learning Suite.
+
 _When you are ready for you assignment to be graded, submit a link to your Github repo on Learning Suite for the **CSS Fonts and a Button** assignmemt_
