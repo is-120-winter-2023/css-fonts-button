@@ -1,6 +1,8 @@
 # CSS fonts and a button
 
-**Objectives**: Learn how to use CSS stylesheets. Add web fonts to your website, adjust whitespace to keep your pages from looking crowded, and create a button class to style links to appear as "web buttons."
+**Objectives**: Learn how to use CSS stylesheets. Add web fonts to your website, create a button class to style links to appear as "web buttons," and adjust whitespace to keep your pages from looking crowded.
+
+**Concepts covered**: CSS resets, box-model, CSS variables, `:hover` pseudoclass, simple transitions.
 
 | :warning: This assignment builds on your _Responsive images and SVG images_ assignment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -91,7 +93,7 @@ or
 
 ## Adding fonts
 
-We'll use Google fonts in this course because they are free and they are easy to use.
+We'll use [Google fonts](https://fonts.google.com/) in this course because they are free and they are easy to use. For detailed info and a video tutorial on adding Google fonts, see [Using web fonts from a font delivery service](hhttps://fonts.google.com/knowledge/using_type/using_web_fonts_from_a_font_delivery_service).
 
 - Add the two Google fonts from your style guide to your website. Make sure to add the Google font `<link>` elements to the `<head>` of each of your HTML documents. The fonts should be loaded after `normalize.css` but before your `styles/main.css` file.
 - Use the `font-family` property to set the font for your headings and body text.
@@ -133,11 +135,11 @@ Many links on the web are styled as buttons. Buttons are a common way to signal 
 | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | For tips on whitespace, watch [Kevin Powell's Web design tips for developers](https://www.youtube.com/watch?v=ykn4XNDwW7Q). Although, I prefer `em` to `ch`. |
 
-- increase the default line height
-- remember that larger font sizes (such as headers) need smaller line heights
+- Increase the default line height of your body text using the `line-height` property.
+- Set a line-height for your headers (h1, h2, h3), remembering that larger font sizes need smaller line heights
 - Center, pad, and limit the max-width of your `<main>` element using the following CSS:
 
-```
+```css
 main {
   margin: 0 auto;
   padding: 0 1rem;
@@ -146,11 +148,11 @@ main {
 ```
 
 - Add padding - usually 1rem is good - to the right and left of any text not inside `<main>` so that it doesn't run to the edge of the viewport. Add the padding to the highest level element possible.
-- You can adjust the max-width and padding as needed to fit your style.
+- You can adjust the `max-width` and `padding` as needed to fit your style.
 - If needed, limit the length of any line of text outside of `<main>` to 40-70 characters (try using em unit).
 
-| :book: Read about collapsing margins                                                                                                                                                        |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Collapsing margins can be tricky and can be confusing. Read Smashing Magazine's section on [margin collapsing](https://www.smashingmagazine.com/2019/07/margins-in-css/#margin-collapsing). |
+| :book: Read about collapsing margins                                                                                                                                                             |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Collapsing margins can be tricky and sometimes confusing. Review Smashing Magazine's section on [margin collapsing](https://www.smashingmagazine.com/2019/07/margins-in-css/#margin-collapsing). |
 
 - Adjust the top and bottom margins of your headings and main elements (aside, footer, etc.) to keep your page from looking cramped. Make sure you are aware of any collapsing margins.
