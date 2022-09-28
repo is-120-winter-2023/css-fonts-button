@@ -156,3 +156,9 @@ main {
 | Collapsing margins can be tricky and sometimes confusing. Review Smashing Magazine's section on [margin collapsing](https://www.smashingmagazine.com/2019/07/margins-in-css/#margin-collapsing). |
 
 - Adjust the top and bottom margins of your headings and main elements (aside, footer, etc.) to keep your page from looking cramped. Make sure you are aware of any collapsing margins.
+
+## :rocket: Publish on Github Pages
+
+When your assignment is finished, sync it to Github and publish it on Github Pages. Remember to paste the Github pages URL in the repo _About_ section.
+
+_When you are ready for you assignment to be graded, submit a link to your Github repo on Learning Suite for the **CSS Fonts and a Button** assignmemt_
