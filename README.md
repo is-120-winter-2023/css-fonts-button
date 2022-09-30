@@ -1,3 +1,5 @@
+<!-- cSpell:enable  -->
+
 # CSS fonts and a button
 
 **Objectives**: Learn how to use CSS stylesheets. Add web fonts to your website, create a button class to style links to appear as "web buttons," and adjust whitespace to keep your pages from looking crowded.
@@ -61,7 +63,7 @@ Since colors are used in many places, it's a good idea to define them as variabl
 
 Variables that are used throughout your website are best added to the `:root` selector. This is a special selector that represents the root element of the document. It's almost the same as the `html` selector, but, because it is a pseudo-class, it has a higher specificity.
 
-At the top of your `styles/main.css` file, add your style guide colors as CSS variables. You can name the variable using its color or its purpose, e.g. `--dark-blue` or `--primary-heading-color`
+At the top of your `styles/main.css` file, add your style guide colors as CSS variables. You can nme the variable using its color or its purpose, e.g. `--dark-blue` or `--primary-heading-color`
 
 Developers do both and argue over which is best.
 | 📖 Naming color variables |
@@ -212,4 +214,4 @@ _CSS tests_
 - CSS contains `.button` style declaration
 - CSS contains `.button:hover` style declaration
 
-_When you are ready for you assignment to be graded, submit a link to your Github repo on Learning Suite for the **CSS Fonts and a Button** assignmemt_
+_When you are ready for you assignment to be graded, submit a link to your Github repo on Learning Suite for the **CSS Fonts and a Button** assignment_
