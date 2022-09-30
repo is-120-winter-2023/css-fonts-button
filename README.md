@@ -10,21 +10,22 @@
 
 ## Image width reset
 
-When writing responsive websites, we usually set the image width to 100%. We aren't ready to make our images responsive, so in your `styles/main.css` file, change the selector of this ruleset to only apply to images inside `<picture>` elements.
+When creating responsive websites, we set the image width to 100% and the height to auto. We aren't ready to make our images responsive, so in your `styles/main.css` file, replace your `img` declaration with the following, which limits the maximum width of images:
 
 ```css
 img {
   width: 100%;
+  height: auto;
+  max-width: 600px;
   display: block;
 }
 ```
 
-add `picture` to the selector:
+Below the `img` declaration block, add this declaration to remove the `max-width` limitation on your `picture` image:
 
 ```css
 picture img {
-  width: 100%;
-  display: block;
+  max-width: none;
 }
 ```
 
