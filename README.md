@@ -163,4 +163,52 @@ When your assignment is finished, sync it to Github and publish it on Github Pag
 
 Make sure to test your website on [validator.nu](https://validator.nu/). If you have any errors, fix them before submitting your URL to Learning Suite.
 
+### :star: Assignment tests
+
+_general HTML structure_
+
+- `<head>` should have a `<title>`
+- `<head>` should have a `<meta>` description element
+- all HTML files should contain an `<h1>`, and only one `<h1>`
+- all HTML files should contain favicon information
+- all index.html files must contain a `<header>`
+- all `<header>` elements must contain a `<nav>` element
+- menu items in header `<nav>` must be in an `<ul>`
+
+_tests for main index.html_
+
+- main index.html must contain a `<main>`
+- `<main>` must contain two `<article>` elements
+- each `<article>` must contain an `<h2>` and at least one `<p>`
+- main index.html must contain an `<aside>`
+- main index.html must contain a `<footer>`
+- text in the `<aside>` must inside a `<p>`
+- text in the `<footer>` must be inside a `<p>`
+
+_image tests_
+
+- image paths are all lowercase and contain no spaces
+- images must be 1920px wide or less
+- relative paths to images used, and images must be in the images directory
+- images that aren't SVGs and images outside `<picture>` elements have the `<img>` height and width attributes set to the src image's intrinsic dimensions
+- main index.html contains a `<picture>` element
+- `<picture>` element must contain three `<source>` elements with media and srcset attributes
+- `<picture>` element must contain a fallback image
+- about page includes an `<img>` element that uses srcset and sizes to load three versions of the same image with different widths
+- contact page loads an SVG file with `<img>`
+
+_CSS tests_
+
+- `normalize.css` loaded as first stylesheet on all pages
+- stylesheet `main.css` in styles folder is loaded on all pages using relative links
+- Google Fonts stylesheet is loaded on all pages after `normalize.css` but before `main.cs`s`
+- global box-sizing rule set to `border-box`
+- `:root` contains CSS variables for colors
+- `font-family`, `color`, and `line-height` set in body
+- remove underlines from `<a>`
+- `:hover` class for all `<a>` that contain `href` (non-dead links)
+- two web buttons on main page: `<a class="button">`
+- CSS contains `.button` style declaration
+- CSS contains `.button:hover` style declaration
+
 _When you are ready for you assignment to be graded, submit a link to your Github repo on Learning Suite for the **CSS Fonts and a Button** assignmemt_
