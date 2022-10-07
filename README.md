@@ -117,6 +117,10 @@ The default styling for `<a>` elements includes an underline. Most websites don'
 
 Also add a `:hover` pseudo-class to style links when the user hovers over them.
 
+| :warning: "Dead" links and hover states                                                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| You don't want dead links (links without an `href` attribute) to look like active links by having a hover state. Write a `:hover` selector that targets only links with an `href` attribute. |
+
 ## A web button class
 
 Many links on the web are styled as buttons. Buttons are a common way to signal users that an item is clickable.
