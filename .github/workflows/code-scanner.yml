@@ -14,4 +14,12 @@ jobs:
         with:
           root: .
 
-
+  HTML-proofer:
+    name: html-proof
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: chabad360/htmlproofer@master
+        with:
+          directory: .
+          arguments: --allow-missing-href --ignore-urls="/fonts.googleapis.com/,/fonts.gstatic.com/"
