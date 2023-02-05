@@ -2,10 +2,10 @@ const sizeOf = require("image-size");
 const fs = require("fs");
 const { doms, INDEX, ABOUT, CONTACT } = require("./dom-check.js");
 
-const MAX_IMAGE_WIDTH = 1920;
-const CHECK_FONTS = false;
+const MAX_IMAGE_WIDTH = 2000;
+const CHECK_CSS = true; // enable to load main.css
+const CHECK_FONTS = true; // enable for font tests
 const CHECK_FORM = false;
-const CHECK_CSS = false;
 const CHECK_FOR_MAIN_CSS = false; // enable for panel and button classes in main
 
 /**
@@ -60,8 +60,14 @@ if (doms[0]) {
     const images = buildImagesArray(domDocs);
 
     //load CSS file once
-    const css = fs.readFileSync("styles/main.css", "utf-8");
+    let css = null;
+    try {
+      css = fs.readFileSync("styles/main.css", "utf-8");
+    } catch (err) {
+      console.error("could not find main.css");
+    }
 
+    console.log("css: ", css);
     return { docsAndNames, images, css };
   }
 
@@ -397,82 +403,91 @@ if (doms[0]) {
   });
   if (CHECK_CSS) {
     describe("\nCSS tests\n-----------------------", () => {
-      test("global box-sizing rule set to border-box and :root contains CSS variables", () => {
-        let regex = new RegExp(/\*\s+\{\s*\n\s+box-sizing:\s+border-box/);
-        expect(regex.test(css)).toBe(true);
-        regex = new RegExp(/:root\s+\{\s*\n\s+--/);
-        expect(regex.test(css)).toBe(true);
-      });
-
-      test("font-family, color, and line-height set in body", () => {
-        const attr = ["font-family", "color", "line-height"];
-        let fail = false;
-
-        attr.forEach(a => {
-          const regexStr = `body\\s+{[^}]+${a}:`;
-          const regex = new RegExp(regexStr);
-          if (!regex.test(css)) {
-            fail = true;
-          }
+      if (css) {
+        test("global box-sizing rule set to border-box and :root contains CSS variables", () => {
+          let regex = new RegExp(/\*\s+\{\s*\n\s+box-sizing:\s+border-box/);
+          expect(regex.test(css)).toBe(true);
+          regex = new RegExp(/:root\s+\{\s*\n\s+--/);
+          expect(regex.test(css)).toBe(true);
         });
 
-        expect(fail).toBe(false);
-      });
+        test("font-family, color, and line-height set in body", () => {
+          const attr = ["font-family", "color", "line-height"];
+          let fail = false;
 
-      test("remove underlines from <a> and add :hover class for all <a> that contain href attribute", () => {
-        let regex = new RegExp(/^a\s[^}]+text-decoration:\s+none/, "gm");
-        expect(regex.test(css)).toBe(true);
-        regex = new RegExp(/^a\[href\]:hover\s+{$/, "gm");
-        expect(regex.test(css)).toBe(true);
-      });
+          attr.forEach(a => {
+            const regexStr = `body\\s+{[^}]+${a}:`;
+            const regex = new RegExp(regexStr);
+            if (!regex.test(css)) {
+              fail = true;
+            }
+          });
 
-      test("CSS contains .button style and .button:hover declarations", () => {
-        let regex = new RegExp(/\.button\s*\{.*/);
-        expect(regex.test(css)).toBe(true);
-        regex = new RegExp(/\.button:hover\s*\{.*/);
-        expect(regex.test(css)).toBe(true);
-      });
-
-      // visual tests (not tested here): overlay working; filter or background color
-      test("hero section contains an <h1> and a <p>", () => {
-        const hero = docs[INDEX].querySelector(".hero");
-        expect(hero.querySelector("h1")).not.toBeNull();
-        expect(hero.querySelector("p")).not.toBeNull();
-      });
-
-      test("hero h1 font-size set using clamp()", () => {
-        const regex = new RegExp(/\.hero h1\s*\{[^}]+font-size:\s*clamp\(/);
-        expect(regex.test(css)).toBe(true);
-      });
-
-      test("section with class .cards contains four cards, each with class .card", () => {
-        const cards = docs[INDEX].querySelectorAll("section.cards .card");
-        expect(cards.length).toBe(4);
-      });
-      test("css contains at least two media queries which use (min-width: ...)", () => {
-        const count = (css.match(/@media\s*\(min-width/g) || []).length;
-        expect(count).toBeGreaterThanOrEqual(2);
-      });
-
-      test("body set to display: flex and flex-direction: column", () => {
-        const attr = ["display:\\s+flex", "flex-direction:\\s+column"];
-        let fail = false;
-
-        attr.forEach(a => {
-          const regexStr = `body\\s*{[^}]+${a}`;
-          const regex = new RegExp(regexStr, "gm");
-          if (!regex.test(css)) {
-            fail = true;
-          }
+          expect(fail).toBe(false);
         });
 
-        expect(fail).toBe(false);
-      });
+        test("remove underlines from <a> and add :hover class for all <a> that contain href attribute", () => {
+          let regex = new RegExp(/^a\s[^}]+text-decoration:\s+none/, "gm");
+          expect(regex.test(css)).toBe(true);
+          regex = new RegExp(/^a\[href\]:hover\s+{$/, "gm");
+          expect(regex.test(css)).toBe(true);
+        });
 
-      test("main has max-width set", () => {
-        const regex = new RegExp(/main\s*{[^}]+max-width\s*:/, "gm");
-        expect(regex.test(css)).toBe(true);
-      });
+        test("CSS contains .button style and .button:hover declarations", () => {
+          let regex = new RegExp(/\.button\s*\{.*/);
+          expect(regex.test(css)).toBe(true);
+          regex = new RegExp(/\.button:hover\s*\{.*/);
+          expect(regex.test(css)).toBe(true);
+        });
+
+        // visual tests (not tested here): overlay working; filter or background color
+        test("hero section contains an <h1> and a <p>", () => {
+          const hero = docs[INDEX].querySelector(".hero");
+          expect(hero.querySelector("h1")).not.toBeNull();
+          expect(hero.querySelector("p")).not.toBeNull();
+        });
+
+        test("hero h1 font-size set using clamp()", () => {
+          const regex = new RegExp(/\.hero h1\s*\{[^}]+font-size:\s*clamp\(/);
+          expect(regex.test(css)).toBe(true);
+        });
+
+        test("section with class .cards contains four cards, each with class .card", () => {
+          const cards = docs[INDEX].querySelectorAll("section.cards .card");
+          expect(cards.length).toBe(4);
+        });
+        test("css contains at least two media queries which use (min-width: ...)", () => {
+          const count = (css.match(/@media\s*\(min-width/g) || []).length;
+          expect(count).toBeGreaterThanOrEqual(2);
+        });
+
+        test("body set to display: flex and flex-direction: column", () => {
+          const attr = ["display:\\s+flex", "flex-direction:\\s+column"];
+          let fail = false;
+
+          attr.forEach(a => {
+            const regexStr = `body\\s*{[^}]+${a}`;
+            const regex = new RegExp(regexStr, "gm");
+            if (!regex.test(css)) {
+              fail = true;
+            }
+          });
+
+          expect(fail).toBe(false);
+        });
+
+        test("main has max-width set", () => {
+          const regex = new RegExp(/main\s*{[^}]+max-width\s*:/, "gm");
+          expect(regex.test(css)).toBe(true);
+        });
+      } else {
+        test("styles/main.css file exists", () => {
+          expect(
+            css,
+            "html pages must load stylesheet named styles/main.css"
+          ).not.toBeNull();
+        });
+      }
     });
   }
 

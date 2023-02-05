@@ -1,69 +1,71 @@
-<!-- cSpell:enable  -->
+# CSS fonts and a button asdfjklas
 
-# CSS fonts and a button
-
-**Objectives**: Learn how to use CSS stylesheets. Add web fonts to your website, create a button class to style links to appear as "web buttons," and adjust whitespace to keep your pages from looking crowded.
+**Objectives**: Learn how to use CSS stylesheets. Understand what  user-agent stylesheets are and the purpose of CSS resets. Add web fonts to your website. Create a button class to style links to appear as "web buttons." Adjust whitespace to keep your pages from looking crowded.
 
 **Concepts covered**: CSS resets, box-model, CSS variables, `:hover` pseudoclass, simple transitions.
 
 | :warning: This assignment builds on your _Responsive images and SVG images_ assignment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| After cloning this repo and opening it in VSCode, copy the following files and folders from your _Responsive images and SVG images_ assignment into this repo.<br><br><ul><li>📄 index.html</li><li>📄 favicon.ico</li><li>📁styles</li><li>📁images</li><li>📁about</li><li>📁contact</li></ul><br>**Make sure that you don't copy any other folders or files, including the `test` folder, the hidden `.git` and `.github` folders, and the `package.json` files**<br><br>You can remove the inline SVG from your main `index.html` if it doesn't fit with your design. You can also remove `<figure>` and `<figcaption>` from your image. |
+| After cloning this repo and opening it in VSCode, copy the following files and folders from your _Responsive images and SVG images_ assignment into this repo.<br><br><ul><li>📄 index.html</li><li>📄 favicon.ico</li><li>📁styles</li><li>📁images</li><li>📁about</li><li>📁contact</li></ul><br>**Make sure that you don't copy any other folders or files, including the `test` folder, the hidden `.git` and `.github` folders, and the `package.json` files**<br><br>You can remove the inline SVG from your main `index.html` if it doesn't fit with your design. <br><br>You can also remove `<figure>` and `<figcaption>` from your image if you'd prefer. |
 
-## Image width reset
+## CSS reset stylesheets
 
-When creating responsive websites, we set the image width to 100% and the height to auto. We aren't ready to make our images responsive, so in your `styles/main.css` file, replace your `img` declaration with the following, which limits the maximum width of images:
+Browsers have  _user-agent stylesheets_ that provide default styling for HTML elements. Since each vendors' user-agent stylesheet styles the HTML differently, most developers use a CSS reset stylesheet to make sure their websites look consistent across all browsers. Most CSS frameworks also use a reset. Bootstrap, for example, uses [Reboot](https://getbootstrap.com/docs/4.0/content/reboot/) which is based on normalize.css. Some popular CSS resets include the following:
 
-```css
-img {
-  width: 100%;
-  height: auto;
-  max-width: 600px;
-  display: block;
-}
-```
+- [normalize.css](https://necolas.github.io/normalize.css/) - a popular CSS reset that keeps some default styles. I recommend this for beginners.
+- [Josh Comeau's simple reset](https://www.joshwcomeau.com/css/custom-css-reset/) - a minimalistic modern alternative to normalize.css that keeps many default styles but is notably different from normalize as it removes all margins, adds line spacing, and doesn't set a default font.
+- [Eric Meyer's Reset](https://meyerweb.com/eric/tools/css/reset/) - one of the original CSS resets. It removes all default styles. This requires you to add styles for all elements.
 
-Below the `img` declaration block, add this declaration to remove the `max-width` limitation on your `picture` image:
+[View a CodePen comparing these three CSS resets ![CSS reset comparison](readme-assets/reset-comp.png)
+](https://codepen.io/lsburton/live/yLqwyOd)
 
-```css
-picture img {
-  max-width: none;
-}
-```
+This semester, I included Josh Comeau's simple reset in the `styles/main.css` file. You should have added this file to all your HTML files in the previous assignment. I did comment out some of the resets that I didn't want to use until you understood the concepts, so you'll need to uncomment them.
 
-## Add normalize.css to your website
-
-Browsers have default _user-agent stylesheets_ that provide styling for HTML elements. Since different browsers render CSS differently, you'll need to use a CSS reset to make sure your website looks consistent across all browsers. While there are many CSS resets (and most frameworks provide them), we'll use `normalize.css` which provides base styles for all browsers. You have two options. The easiest option is to load normalize through a _Content Delivery Network_ or CDN. A CDN hosts the normalize file for you. A slightly faster option is to download the file and add it to your project.
-
-Browsers load stylesheets in the order that they are listed in the `<head>` element. Since you want `normalize.css` to reset all styles before it applies your styles, you'll need to add it to the `<head>` element _above_ your `styles/main.css` file (and above the font stylesheets which we will add later in the assignment).
-
-- **CDN option** – To load normalize through a CDN, navigate to [cdnjs](https://cdnjs.com/libraries/normalize) and copy the link tag for `normalize.min.css` (the first file in the list). Paste the link into the `<head>` of each of your `index.html` files, making sure that it appears above the link to load your `styles/main.css` file.
-
-- **Local host option** – Download the latest `normalize.css` file from its [GitHub repo](https://necolas.github.io/normalize.css/). Clicking on download in the repo will likely open the file in your browser. To save it, right click and select "Save as..." and save it in your `styles` folder. Then, add a link to the file in the `<head>` of each of your `index.html` files In your subpages, making sure you use a correct relative path to the `normalize.css` file. Use Emmet to generate the link tag. Type `link:css` and press `tab`, then enter the path to the normalize.css file.
-  <!-- prettier-ignore -->
-  ```html
-  <link rel="stylesheet" href="styles/normalize.css">
-  ```
-
-## Set box-sizing to border-box
-
-In your `styles/main.css` file, add the following rule to the top of the file:
+Let's uncomment some resets for this assignment. Open `styles/main.css`. On line 16, remove the comment marks `/*  */` around  `margin: 0;` so it looks like this:
 
 ```css
 * {
-  box-sizing: border-box;
+  margin: 0;
+  /* this an experimental line-height; if it breaks, add line-height: 1.5 to body */
+  line-height: calc(1em + 0.5rem);
 }
 ```
 
-The `*` is a [universal selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors) that selects all elements. The `box-sizing` property sets how the width and height of an element are calculated. The default value is `content-box` which means that the width and height of an element are calculated based on the content. The `border-box` value means that the width and height of an element are calculated based on the content, padding, and border. This is the behavior that we want for our website, so we'll set it for all elements.
+Next, go to line 31 and uncomment this block:
 
-## Add your style guide colors as CSS variables
+```css
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+```
+
+| 💡 Shortcut to quickly comment and uncomment blocks of code in VSCode |
+|:-----|
+|1. Select the lines you want to comment or uncomment<br>2. Press `Ctrl` + `/` (Windows) or `⌘` + `/` (Mac)<br><br>![comment demo gif](readme-assets/comment-shortcut.gif) |
+
+### An aside on images and `display: block`
+
+One of the more "annoying" CSS quirks for beginnners is that, by default, images are inline elements. This made sense when the web was first created and its focus was on text, but now that we frequently use standalone images, it can cause some problems, especially when adding overlays (because an inline element has line height, overlays over images will have a gap at the bottom because of `line-height`). If the image is set to `display: block` it loses the `line-height` and the overlay will be flush with the bottom of the image. In the image below, the overlay is a transparent blue-green color.
+
+![inline image overlay issues](readme-assets/image-overlay-issue.png)
+
+_[Link to the CodePen](https://codepen.io/lsburton/pen/eYjXmqg?editors=1100) that generated this image._
+
+ The `max-width: 100%` property keeps large images from overflowing thier containers, but you may need to override it on occasion; however, that's for a later lesson. I added the `height: auto` property to make sure images keep their aspect ratio and don't appear squashed.
+
+## CSS variables and the `:root` selector
 
 Since colors are used in many places, it's a good idea to define them as variables. This way, if you decide to change your color scheme, you only need to change the variable values.
 
 Variables that are used throughout your website are best added to the `:root` selector. This is a special selector that represents the root element of the document. It's almost the same as the `html` selector, but, because it is a pseudo-class, it has a higher specificity.
 
-At the top of your `styles/main.css` file, add your style guide colors as CSS variables. You can nme the variable using its color or its purpose, e.g. `--dark-blue` or `--primary-heading-color`
+At the top of your `styles/main.css` file, add your style guide colors as CSS variables. You can name the variable using its color or its purpose, e.g. `--dark-blue` or `--primary-heading-color`
 
 Developers do both and argue over which is best.
 | 📖 Naming color variables |
@@ -72,7 +74,7 @@ Developers do both and argue over which is best.
 
 Here are two samples of how you might define your colors:
 
-```
+```css
 :root {
   --dark-blue: #0a192f;
   --light-blue: #c7d2fe;
@@ -84,7 +86,7 @@ Here are two samples of how you might define your colors:
 
 or
 
-```
+```css
 :root {
   --color-main: #0a192f;
   --color-highlight: #c7d2fe;
@@ -94,13 +96,60 @@ or
 }
 ```
 
+I personally prefer the second style. I also tend to prefix the variable "type" to the variable name to help organize long lists of variables.
+
+Variables aren't limited to colors and can be used for other values, such as font sizes, spacing, and box shadows &ndash; basically anything that you might want to reuse.
+
+### An aside: `html` vs `:root` vs `*`
+
+`<html>` and `:root` refer to the same element, but since `:root` is a pseudo-class, it has a higher specificity than the `html` selector, so it will always override it.
+
+The universal selector `*` is a little different. It applies properties to every element. `<html>` and `:root` only pass down inheritable properties. For example, `background-color` is an inheritable property. If set in `:root` like this:
+
+```css
+:root {
+  background-color: papayawhip;
+}
+```
+
+It will appear to be the same as
+
+```css
+* {
+  background-color: papayawhip;
+}
+```
+
+because the `background-color` will be inherited by all elements. However, if you set a property that is not inheritable, such as `border`, it will not be inherited. So
+
+```css
+:root {
+  border: 6px solid rebeccapurple;
+}
+```
+
+and
+
+```css
+* {
+  border: 6px solid rebeccapurple;
+}
+```
+
+will behave differently. The `border` will only be applied to the `:root` element in the first example, but will be applied to every element in the second example. Try it out in a CodePen!
+
+| :bulb: Cascade, specificity, and inheritance |
+:-----|
+| To learn more see MDN's [Cascade, specificity, and inheritance](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance) or, while it's an older article, it's still quite helpful, Sitepoint's [CSS Inheritance: An Introduction](https://www.sitepoint.com/css-inheritance-introduction/). |
+
 ## Adding fonts
 
-We'll use [Google fonts](https://fonts.google.com/) in this course because they are free and they are easy to use. For detailed info and a video tutorial on adding Google fonts, see [Using web fonts from a font delivery service](hhttps://fonts.google.com/knowledge/using_type/using_web_fonts_from_a_font_delivery_service).
+We'll use [Google fonts](https://fonts.google.com/) in this course because they are free and they are easy to use. For detailed info and a video tutorial on adding Google fonts, see [Using web fonts from a font delivery service](https://fonts.google.com/knowledge/using_type/using_web_fonts_from_a_font_delivery_service).
 
-- Add the two Google fonts from your style guide to your website. Make sure to add the Google font `<link>` elements to the `<head>` of each of your HTML documents. The fonts should be loaded after `normalize.css` but before your `styles/main.css` file.
+- Add the two Google fonts from your style guide to your website. Make sure to add both fonts at once. Add the `<link>` elements to the `<head>` of each of your HTML documents. The fonts should be loaded  before your `styles/main.css` file.
 - Use the `font-family` property to set the font for your headings and body text.
 - Assign colors to your headings and body text using the `color` property and your CSS variables.
+
   ```css
   color: var(--dark-blue);
   ```
@@ -131,9 +180,11 @@ Many links on the web are styled as buttons. Buttons are a common way to signal 
 - Override the default `a` color if needed.
 - Add a `:hover` effect for your button. Make sure you override an existing `a:hover` effects.
 - Add a transition to smooth the change when the button is hovered over. Below is a simple transition that you can use:
+
   ```css
   transition: background-color 300ms ease;
   ```
+
 - Change the cursor to a pointer when it's on top of/in the web button.
 
 ## Whitespace
