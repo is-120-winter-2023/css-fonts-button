@@ -446,7 +446,6 @@ if (doms[0]) {
         });
 
         test("global box-sizing rule set to border-box and :root contains CSS variables", () => {
-          // let regex = new RegExp(/\*\s+\{\s*\n\s+box-sizing:\s+border-box/);
           let regex = new RegExp(/\*,[^}]+box-sizing:\s*border-box/);
           expect(regex.test(css)).toBe(true);
           regex = new RegExp(/:root\s+\{\s*\n\s+--/);
