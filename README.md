@@ -3,7 +3,7 @@
 
 **Objectives**: Learn how to use CSS stylesheets. Understand what  user-agent stylesheets are and the purpose of CSS resets. Add web fonts to your website. Create a button class to style links to appear as "web buttons." Adjust whitespace to keep your pages from looking crowded.
 
-**Concepts covered**: CSS resets, box-model, CSS variables, `:hover` pseudoclass, simple transitions.
+**Concepts covered**: CSS resets, box-model, CSS variables, pseudo-classes, simple transitions.
 
 | :warning: This assignment builds on your _Responsive images and SVG images_ assignment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
