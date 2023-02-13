@@ -6,6 +6,15 @@
 /*****************************************************/
 /* Always add your CSS below the reset CSS           */
 /*****************************************************/
+:root {
+  --color-font: #333;
+  --color-primary: #205373; /* dark blue */
+  --color-secondary: #517ea6; /* light blue */
+  --color-dark-accent: #40372f; /* dark brown */
+  --color-accent: #a6653f; /* orange brown */
+  --color-accent-light: #f2bc8d; /* light tan */
+}
+
 *,
 *::before,
 *::after {
@@ -13,7 +22,7 @@
 }
 
 * {
-  /* margin: 0; */
+  margin: 0;
   /* this an experimental line-height; if it breaks, add line-height: 1.5 to body */
   line-height: calc(1em + 0.5rem);
 }
@@ -83,3 +92,92 @@ img[src$="svg"] {
 }
 
 /************ add your CSS here *****************/
+
+/***** General element styles *****/
+body {
+  font-family: "Montserrat", sans-serif;
+  color: var(--color-font);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-primary);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  margin-bottom: 0.5em;
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+p {
+  margin-bottom: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+a[href]:hover {
+  color: var(--color-accent-light);
+}
+
+main {
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 50rem;
+}
+
+article,
+aside {
+  margin-bottom: 6rem;
+}
+
+aside {
+  padding: 0 1rem;
+}
+
+footer {
+  background-color: var(--color-dark-accent);
+}
+
+footer p {
+  color: #fff;
+  margin: 0;
+  padding: 3rem 1rem 6rem;
+}
+
+/***** General purpose classes *****/
+.button {
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+  transition: background-color 400ms ease-in-out, color 400ms ease-in-out;
+}
+
+.button:hover {
+  background-color: var(--color-secondary);
+  color: #fff;
+}
+
+/* need extra specificity to override the color set by a[href]:hover */
+a.button:hover {
+  color: #fff;
+}

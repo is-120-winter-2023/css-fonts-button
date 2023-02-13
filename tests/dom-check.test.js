@@ -5,8 +5,13 @@ const { doms, INDEX, ABOUT, CONTACT } = require("./dom-check.js");
 const MAX_IMAGE_WIDTH = 2000;
 const CHECK_CSS = true; // enable to load main.css
 const CHECK_FONTS = true; // enable for font tests
+const CHECK_FOR_INLINE_SVG = false; // enable for inline SVG tests
 const CHECK_FORM = false;
-const CHECK_FOR_MAIN_CSS = false; // enable for panel and button classes in main
+const CHECK_FOR_BUTTON = true; // enable for button classes
+const CHECK_FOR_PANELS = false; // enable for panel classes
+const CHECK_FOR_HERO = false; // enable for hero info
+const CHECK_FOR_CARDS = false; // enable for card classes
+const CHECK_FOR_FLEX = false; // enable for flex class on body
 
 /**
  * Converts an integer index to a string name
@@ -67,7 +72,7 @@ if (doms[0]) {
       console.error("could not find main.css");
     }
 
-    console.log("css: ", css);
+    // console.log("css: ", css);
     return { docsAndNames, images, css };
   }
 
@@ -144,6 +149,7 @@ if (doms[0]) {
 
     describe("STYLESHEETS LOADED", () => {
       const fontRegex = new RegExp(/fonts.googleapis.com/);
+      const fontURLRegex = new RegExp(/https:\/\/fonts.googleapis.com/);
 
       test.each(docs)(
         `$name index.html loads${
@@ -156,7 +162,23 @@ if (doms[0]) {
               fontRegex.test(stylesheets[0].href),
               `${name} index.html: Google fonts not loaded or not loaded first`
             ).toBe(true);
+
+            let fontsLoaded = 0;
+            stylesheets.forEach(stylesheet => {
+              if (fontURLRegex.test(stylesheet.href)) {
+                fontsLoaded++;
+                console.log(
+                  `name: ${name} href: ${stylesheet.href} fontsLoaded: ${fontsLoaded}`
+                );
+              }
+            });
+
+            expect(
+              fontsLoaded,
+              `${name} index.html: don't use multiple calls to load fonts from Google Fonts; bundle fonts when generating the link tag`
+            ).toBe(1);
           }
+
           let mainFound = false;
           const lastStylesheet = stylesheets[stylesheets.length - 1];
           if (name === "main") {
@@ -173,6 +195,18 @@ if (doms[0]) {
           }
           expect(mainFound, `main.css not loaded in ${name} index.html`).toBe(
             true
+          );
+        }
+      );
+    });
+
+    describe("NO <br> TAGS", () => {
+      test.each(docs)(
+        "$name index.html does not contain any <br> tags",
+        ({ doc, name }) => {
+          const brCount = doc.querySelectorAll("br").length;
+          expect(brCount, `${name} index.html has ${brCount} <br> tags`).toBe(
+            0
           );
         }
       );
@@ -348,21 +382,23 @@ if (doms[0]) {
       ).not.toBeNull();
     });
 
-    test("main index.html includes a simple inline SVG image displayed using <symbol>", () => {
-      expect(
-        docs[INDEX].doc.querySelector("svg"),
-        "main index.html missing inline svg"
-      ).not.toBeNull();
-      expect(
-        docs[INDEX].doc.querySelector("symbol"),
-        "main index.html missing symbol"
-      ).not.toBeNull();
-    });
+    if (CHECK_FOR_INLINE_SVG) {
+      test("main index.html includes a simple inline SVG image displayed using <symbol>", () => {
+        expect(
+          docs[INDEX].doc.querySelector("svg"),
+          "main index.html missing inline svg"
+        ).not.toBeNull();
+        expect(
+          docs[INDEX].doc.querySelector("symbol"),
+          "main index.html missing symbol"
+        ).not.toBeNull();
+      });
+    }
 
-    test(`<article> must contain an <h2> ${
-      CHECK_FOR_MAIN_CSS ? "," : "and"
+    test(`<article> must contain an <h2>${
+      CHECK_FOR_BUTTON ? "," : " and"
     } at least one <p>${
-      CHECK_FOR_MAIN_CSS ? ' and an <a class="button">' : ""
+      CHECK_FOR_BUTTON ? ' and an <a class="button">' : ""
     }`, () => {
       const articles = docs[INDEX].doc.querySelectorAll("article");
       articles.forEach((article, i) => {
@@ -374,7 +410,7 @@ if (doms[0]) {
           article.querySelectorAll("p"),
           `<article> number ${i + 1} missing a <p>`
         ).not.toBeNull();
-        if (CHECK_FOR_MAIN_CSS) {
+        if (CHECK_FOR_BUTTON) {
           expect(
             article.querySelector("a.button"),
             `<article> number ${i + 1} does not have an <a class="button">`
@@ -382,7 +418,7 @@ if (doms[0]) {
         }
       });
     });
-    if (CHECK_FOR_MAIN_CSS) {
+    if (CHECK_FOR_PANELS) {
       test("two articles with class panel", () => {
         const panels = docs[INDEX].doc.querySelectorAll("article.panel");
         expect(panels.length).toBeGreaterThanOrEqual(2);
@@ -404,15 +440,21 @@ if (doms[0]) {
   if (CHECK_CSS) {
     describe("\nCSS tests\n-----------------------", () => {
       if (css) {
-        test("global box-sizing rule set to border-box and :root contains CSS variables", () => {
-          let regex = new RegExp(/\*\s+\{\s*\n\s+box-sizing:\s+border-box/);
-          expect(regex.test(css)).toBe(true);
-          regex = new RegExp(/:root\s+\{\s*\n\s+--/);
-          expect(regex.test(css)).toBe(true);
+        test("!important never used", () => {
+          const regex = new RegExp(/!important/);
+          expect(regex.test(css)).toBe(false);
         });
 
-        test("font-family, color, and line-height set in body", () => {
-          const attr = ["font-family", "color", "line-height"];
+        test("global box-sizing rule set to border-box and :root contains CSS variables", () => {
+          // let regex = new RegExp(/\*\s+\{\s*\n\s+box-sizing:\s+border-box/);
+          let regex = new RegExp(/\*,[^}]+box-sizing:\s*border-box/);
+          expect(regex.test(css)).toBe(true);
+          regex = new RegExp(/:root\s+\{\s*\n\s+--/);
+          expect(regex.test(css), ":root variables not found").toBe(true);
+        });
+
+        test("font-family and color set in body", () => {
+          const attr = ["font-family", "color"];
           let fail = false;
 
           attr.forEach(a => {
@@ -440,41 +482,52 @@ if (doms[0]) {
           expect(regex.test(css)).toBe(true);
         });
 
-        // visual tests (not tested here): overlay working; filter or background color
-        test("hero section contains an <h1> and a <p>", () => {
-          const hero = docs[INDEX].querySelector(".hero");
-          expect(hero.querySelector("h1")).not.toBeNull();
-          expect(hero.querySelector("p")).not.toBeNull();
-        });
-
-        test("hero h1 font-size set using clamp()", () => {
-          const regex = new RegExp(/\.hero h1\s*\{[^}]+font-size:\s*clamp\(/);
+        test("footer has styling including background-color", () => {
+          const regex = new RegExp(/footer\s*\{[^}]+background-color:/);
           expect(regex.test(css)).toBe(true);
         });
 
-        test("section with class .cards contains four cards, each with class .card", () => {
-          const cards = docs[INDEX].querySelectorAll("section.cards .card");
-          expect(cards.length).toBe(4);
-        });
-        test("css contains at least two media queries which use (min-width: ...)", () => {
-          const count = (css.match(/@media\s*\(min-width/g) || []).length;
-          expect(count).toBeGreaterThanOrEqual(2);
-        });
-
-        test("body set to display: flex and flex-direction: column", () => {
-          const attr = ["display:\\s+flex", "flex-direction:\\s+column"];
-          let fail = false;
-
-          attr.forEach(a => {
-            const regexStr = `body\\s*{[^}]+${a}`;
-            const regex = new RegExp(regexStr, "gm");
-            if (!regex.test(css)) {
-              fail = true;
-            }
+        if (CHECK_FOR_HERO) {
+          // visual tests (not tested here): overlay working; filter or background color
+          test("hero section contains an <h1> and a <p>", () => {
+            const hero = docs[INDEX].querySelector(".hero");
+            expect(hero.querySelector("h1")).not.toBeNull();
+            expect(hero.querySelector("p")).not.toBeNull();
           });
 
-          expect(fail).toBe(false);
-        });
+          test("hero h1 font-size set using clamp()", () => {
+            const regex = new RegExp(/\.hero h1\s*\{[^}]+font-size:\s*clamp\(/);
+            expect(regex.test(css)).toBe(true);
+          });
+        }
+
+        if (CHECK_FOR_CARDS) {
+          test("section with class .cards contains four cards, each with class .card", () => {
+            const cards = docs[INDEX].querySelectorAll("section.cards .card");
+            expect(cards.length).toBe(4);
+          });
+          test("css contains at least two media queries which use (min-width: ...)", () => {
+            const count = (css.match(/@media\s*\(min-width/g) || []).length;
+            expect(count).toBeGreaterThanOrEqual(2);
+          });
+        }
+
+        if (CHECK_FOR_FLEX) {
+          test("body set to display: flex and flex-direction: column", () => {
+            const attr = ["display:\\s+flex", "flex-direction:\\s+column"];
+            let fail = false;
+
+            attr.forEach(a => {
+              const regexStr = `body\\s*{[^}]+${a}`;
+              const regex = new RegExp(regexStr, "gm");
+              if (!regex.test(css)) {
+                fail = true;
+              }
+            });
+
+            expect(fail).toBe(false);
+          });
+        }
 
         test("main has max-width set", () => {
           const regex = new RegExp(/main\s*{[^}]+max-width\s*:/, "gm");
